@@ -1,7 +1,18 @@
+"use client"
 import Link from 'next/link'
 import React from 'react'
+import { useSignMessage } from 'wagmi'
+import { Web3Button, Web3Modal, Web3NetworkSwitch } from '@web3modal/react'
 
 const Navbar = () => {
+  const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
+    message: 'gm wagmi frens',
+    onSuccess(data) {
+      console.log('Success', data)
+    },
+  })
+  console.log(data);
+  
   return (
     <div>
           <div  className='flex  items-center justify-around text-white
@@ -35,8 +46,15 @@ const Navbar = () => {
               </p>
         </div>
         <div>
-            Connect Button
+          <Web3Button/>
         </div>
+        <div>
+      <button disabled={isLoading} onClick={() => signMessage()}>
+        Sign message
+      </button>
+      {isSuccess && <div>Signature: {data}</div>}
+      {isError && <div>Error signing message</div>}
+    </div>
         </div>
       </div>
     </div>

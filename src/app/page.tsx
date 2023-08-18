@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Header from "@/components/Header"
-import AllAssetMain from '@/components/AllAssetMain'
+import Carousel from '@/components/Carousel'
 import About from '@/components/About'
 import Footer from '@/components/Footer'
 import Accordian from '@/components/Accordian'
@@ -10,7 +10,7 @@ export default function Home() {
     <Header/>
     <About/>
     <Accordian/>
-    <AllAssetMain/>
+    {/* <Carousel/> */}
     <Footer/>
     </>
   )

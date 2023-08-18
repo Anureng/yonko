@@ -54,7 +54,6 @@ const captureFile = async (e:any) => {
             <Image src="/createasset1.png" alt='nothing' width={600} height={600}/>
         </div>
         <div className='border border-white rounded-3xl shadow-xl flex flex-col items-center justify-center  space-y-5 p-10'>
-
             <p className='text-xl text-white'>Create The Asset</p>
             <div className='space-x-5' >
             <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="number" placeholder='Enter ID' />
@@ -63,8 +62,7 @@ const captureFile = async (e:any) => {
             </div>
             <div className='space-x-5 '>
             <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="number" placeholder='Enter Price'/>
-            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="number" placeholder='Enter Borrowing price' />
-     
+            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="number" placeholder='Enter Borrowing price' />   
             </div>
             <div>
             <Select>
@@ -90,13 +88,11 @@ const captureFile = async (e:any) => {
         <input id="dropzone-file" type="file" onChange={(e)=>captureFile(e)} className="hidden" />
     </label>
 </div>
-
 <div className='space-x-4'>
     <button className='bg-white px-1 py-2 rounded-xl' onClick={(e)=>uploadtoWeb3Storage(e)}>Upload File</button>
     <button className='bg-white px-1 py-2 rounded-xl'>Create</button>
 </div>
         </div>
-
         <ToastContainer />
     </div>
   )

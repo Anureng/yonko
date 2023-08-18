@@ -7,7 +7,8 @@ import {
   } from "@/components/ui/accordion"
 const Accordian = () => {
   return (
-    <div className='flex items-center justify-center flex-col bg-blue-100'>
+    <div className='flex items-center justify-center flex-col bg-gray-100'>
+      <p className='text-2xl text-blue-800'>FAQ</p>
         <Accordion type="single" collapsible className='w-3/5 p-2  text-blue-700  text-xl'>
   <AccordionItem value="item-1" >
     <AccordionTrigger className='text-lg'>Is it accessible?</AccordionTrigger>
