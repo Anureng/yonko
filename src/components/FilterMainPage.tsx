@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Select,
     SelectContent,
@@ -7,68 +7,106 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
+  import { Skeleton } from "@/components/ui/skeleton"
+
+
+
+
+  import { useAccount, useContractRead } from 'wagmi'
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from '@/app/contract/contract'
+import { ethers } from 'ethers'
+import Image from 'next/image'
   
+
+
 const FilterMainPage = () => {
-    const [data, setData] = useState([
-        {
-            "name":"Austin",
-            "description":"lorem ipsum dolor lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-            "Price":300,
-            "Category":"Horror",
-            "Author":"John",
-            "type":"hardCopy"
-        },
-        {
-            "name":"joy",
-            "description":"lorem ipsum dolor lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-            "Price":400,
-            "Category":"Fantasy",
-            "Author":"John",
-            "type":"softcopy"
-        },
-        {
-            "name":"Jimmy",
-            "description":"lorem ipsum dolor lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-            "Price":300,
-            "Category":"Horror",
-            "Author":"John",
-            "type":"hardCopy"
-        },
-        {
-            "name":"Good day",
-            "description":"lorem ipsum dolor lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-            "Price":300,
-            "Category":"cartoon",
-            "Author":"chris",
-            "type":"softCopy"
-        },
-        {
-            "name":"Hello",
-            "description":"lorem ipsum dolor lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-            "Price":300,
-            "Category":"Horror",
-            "Author":"John",
-            "type":"hardCopy"
-        },
-        {
-            "name":"Hello",
-            "description":"lorem ipsum dolor lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-            "Price":300,
-            "Category":"Horror",
-            "Author":"John",
-            "type":"hardCopy"
-        },
-        {
-            "name":"Hello",
-            "description":"lorem ipsum dolor lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-            "Price":300,
-            "Category":"Horror",
-            "Author":"John",
-            "type":"hardCopy"
-        }
-    ])
+     const [contractData , setContractData] = useState()
+     const [loading, setLoading] = useState(true)
+     const { address, isConnecting, isDisconnected } = useAccount()
+     useEffect(() => {
+      async function fetchData() {
+      const provider = new ethers.providers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/Kz46-dMGtMzy5Bg7hvfcnsvi8NuHh3S2")
+      const signer = provider.getSigner(address);
+      const addressAbiSigner = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        signer
+      )
+
+      const dataCount = await addressAbiSigner.assetCount()
+
+      const data = [];
+
+      for(let i=0 ; i<dataCount.toNumber(); i++) {
+        const pushData = await addressAbiSigner.arrayAsset(i)
+        console.log(i, pushData);
+        
+        data.push(pushData)
+        
+      }
+      console.log(data);
+      
+      setContractData(data)
+      setLoading(false)
+    }
+    fetchData()
+    console.log(fetchData());
+     }, [])
+
+
+     const handleBuyAsset =async(index) =>{
+    //  const provider = new ethers.providers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/Kz46-dMGtMzy5Bg7hvfcnsvi8NuHh3S2")
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner(address);
+     const addressAbiSigner = new ethers.Contract(
+       CONTRACT_ADDRESS,
+       CONTRACT_ABI,
+       signer
+     )
+
+      // console.log(i);/
+      const pushData = await addressAbiSigner.BuyAsset(index)
+      console.log("successfull purchase", pushData);
+
+    console.log(address);
+
+    const [activeCategory, setActiveCategory] = useState([])
+    const [searcgCategory, setSearchCategory] = useState("")
+    const searchFilterCategory = () =>{
+      
+    }
+  }
+
+
+
+
+  const handleBorrowAsset =async(index) =>{
+    //  const provider = new ethers.providers.JsonRpcProvider("https://eth-sepolia.g.alchemy.com/v2/Kz46-dMGtMzy5Bg7hvfcnsvi8NuHh3S2")
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner(address);
+     const addressAbiSigner = new ethers.Contract(
+       CONTRACT_ADDRESS,
+       CONTRACT_ABI,
+       signer
+     )
+
+      // console.log(i);/
+      const pushData = await addressAbiSigner.BorrowAsset(index)
+      console.log("successfull purchase", pushData);
+     
+    console.log(address);
+
+    const [activeCategory, setActiveCategory] = useState([])
+    const [searcgCategory, setSearchCategory] = useState("")
+    const searchFilterCategory = () =>{
+      
+    }
+  }
+
+
   return (
     <div>
+      
     <div className='border border-black  '>
         {/* Navbar with higher or lower price  */}
         <div className='flex items-center space-x-2  justify-around'>
@@ -76,7 +114,7 @@ const FilterMainPage = () => {
                 <button>Clear All Filter</button>
             </div>
             <div className='flex items-center'>
-            <input className='px-1 py-2 outline-none ' type="text" placeholder='Enter Book Name...' />
+            <input className='px-1 py-2 outline-none ' onChange={(e)=>setSearchCategory(e.target.value)} type="text" placeholder='Enter Asset Name...' />
             <Select>
   <SelectTrigger className="w-[180px] rounded-xl" >
     <SelectValue placeholder="Select"  />
@@ -112,20 +150,41 @@ const FilterMainPage = () => {
         </div>
         {/* hr line  */}
         <div className=' border-left border'></div>
-        {/* All Data  */}
-        <div className='p-2'>
-        {
-            data.map((el)=>(
-                <div className='flex flex-wrap'>
-                <span>{el.name}</span>
-                <span>{el.description}</span>
-                <span>{el.Price}</span>
-                <span>{el.Category}</span>
-                <span>{el.Author}</span>
-                <span>{el.type}</span>
-                </div>
-            ))
-        }
+<div className='flex flex-wrap items-center justify-center space-x-10 '>
+{
+  loading===true ? (
+    
+ 
+      <Skeleton className="w-[100px] h-[20px] rounded-full" />
+    
+  )
+  :
+  (
+    <div className='flex flex-wrap items-center justify-center space-x-10 '>
+      {contractData?.map((person , index) => (
+  <div key={index } className='border hover:shadow-xl  p-2  hover:rounded-xl'>
+    <span>Name :- {person[0]}</span>
+    <Image className='rounded-xl' src={"https://ipfs.io/ipfs/"+person[7]} alt='loading' width={100} height={100} />
+    {/* <Image src={`https://ipfs.io/ipfs/${person[7]}`} width={100} height={100} alt='Nothing'/> */}
+    <span>Description :- {person[1]}</span> <br />
+    <span>Price :- {parseInt(person[2]._hex)}</span> <br />
+    <span>BorrowingPrice :- {parseInt(person[3]._hex)}</span> <br />
+    <span>Owner :- {person[4].toString()}</span> <br />
+    <span>Borrowed :- {person[8].toString()==="0x0000000000000000000000000000000000000000" ? "No one Borrow this Asset " : (
+      <div>{person[8].toString()}</div>
+      // <div>No one Borrow this Asset </div>
+    )}</span>
+<br />
+<div className='space-x-4'> 
+    <button onClick={()=>handleBuyAsset(index)} className='bg-blue-600 text-white px-1 py-2 rounded-xl'>Buy </button> 
+    <button onClick={()=>handleBorrowAsset(index)} className='bg-blue-600 text-white px-1 py-2 rounded-xl'>Borrow</button>
+</div>
+  </div>
+        ))}
+    </div>
+  )
+}
+
         </div>
         </div>
         </div>

@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar'
 import TokenSecond from '@/components/TokenSecond'
+import UserToken from '@/components/UserToken'
 import Link from 'next/link'
 import React from 'react'
 
@@ -13,6 +14,7 @@ const page = () => {
     <div style={styling} className='h-screen'>
          <Navbar/>
          <TokenSecond/>
+         <UserToken/>
     </div>
   )
 }

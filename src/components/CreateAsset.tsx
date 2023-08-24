@@ -16,6 +16,16 @@ import {
 
 const CreateAsset = () => {
 
+  const [id, setId] = useState("")
+  const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+  const [price, setPrice] = useState("")
+  const [borrowingPrice, setBorrowingPrice] = useState("")
+  const [type, setType] = useState()
+
+  console.log(type);
+  
+
     const [file, setFile] = useState();
     const [fileName, setFileName] = useState();
     const [fileSize, setFileSize] = useState();
@@ -35,7 +45,7 @@ const captureFile = async (e:any) => {
   };
 
 
-  const notify = () => toast.success("File upload Successful");
+  const notify = (data:any) => toast.success(`Image upload Successful`);
   const uploadtoWeb3Storage=async()=>{
     const uploadedFile =await  client.put(file, {
         name: fileName,
@@ -44,9 +54,33 @@ const captureFile = async (e:any) => {
       });
      console.log( uploadedFile);
      const ok=setFileurl(uploadedFile.toString());
-     notify()
+     notify(uploadedFile)
      console.log("gkgk"+typeof( ok));
   }
+
+  const consoleData = () =>{
+    console.log("You have successfully Click");
+    
+  }
+
+
+    const { config, error } = usePrepareContractWrite({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'createAsset',
+    args:[name,description,price,borrowingPrice,fileurl],
+    onError(error) {
+      alert(`An error occurred preparing the transaction: ${error.message}`)
+    },
+  })
+  const contractWrite = useContractWrite(config)
+  const waitForTransaction = useWaitForTransaction({
+    hash: contractWrite.data?.hash,
+    onSuccess() {
+    notify(waitForTransaction)
+    },
+  })
+  const { write } = useContractWrite(config)
 
   return (
     <div className='flex items-center justify-center space-x-2'>
@@ -56,25 +90,25 @@ const captureFile = async (e:any) => {
         <div className='border border-white rounded-3xl shadow-xl flex flex-col items-center justify-center  space-y-5 p-10'>
             <p className='text-xl text-white'>Create The Asset</p>
             <div className='space-x-5' >
-            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="number" placeholder='Enter ID' />
-            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="text" placeholder='Enter Name'/>
-            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="text" placeholder='Enter Description' />
+            {/* <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="number" onChange={(e)=>setId(e.target.value)} placeholder='Enter ID' /> */}
+            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="text" onChange={(e)=>setName(e.target.value)} placeholder='Enter Name'/>
+            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="text"onChange={(e)=>setDescription(e.target.value)} placeholder='Enter Description' />
             </div>
             <div className='space-x-5 '>
-            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="number" placeholder='Enter Price'/>
-            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="number" placeholder='Enter Borrowing price' />   
+            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="number" onChange={(e)=>setPrice(e.target.value)} placeholder='Enter Price'/>
+            <input className='px-1 py-2 rounded-xl bg-transparent outline-none border' type="number" onChange={(e)=>setBorrowingPrice(e.target.value)} placeholder='Enter Borrowing price' />   
             </div>
             <div>
-            <Select>
+            {/* <Select>
   <SelectTrigger className="w-[180px] border-white rounded-xl ">
-    <SelectValue placeholder="Select" className='placeholder:text-white' />
+    <SelectValue placeholder="Select"  className='placeholder:text-white' />
   </SelectTrigger>
-  <SelectContent className='bg-white text-black'>
-    <SelectItem value="light">Audio</SelectItem>
-    <SelectItem value="dark">Video</SelectItem>
-    <SelectItem value="system">Image</SelectItem>
+  <SelectContent className='bg-white text-black'   >
+    <SelectItem  value="Audio" >Audio</SelectItem>
+    <SelectItem  value="Video">Video</SelectItem>
+    <SelectItem  value="Image">Image</SelectItem>
   </SelectContent>
-</Select>
+</Select> */}
             </div>
             <div className="flex items-center justify-center w-60">
     <label className="flex flex-col items-center justify-center w-full h-32  border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -90,7 +124,7 @@ const captureFile = async (e:any) => {
 </div>
 <div className='space-x-4'>
     <button className='bg-white px-1 py-2 rounded-xl' onClick={(e)=>uploadtoWeb3Storage(e)}>Upload File</button>
-    <button className='bg-white px-1 py-2 rounded-xl'>Create</button>
+    <button className='bg-white px-1 py-2 rounded-xl' disabled={!write} onClick={() => write?.()}>Create</button>
 </div>
         </div>
         <ToastContainer />
