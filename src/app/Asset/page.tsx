@@ -1,5 +1,6 @@
 import Asset from '@/components/Asset'
 import FilterMainPage from '@/components/FilterMainPage'
+import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import React from 'react'
 
@@ -11,6 +12,7 @@ const page = () => {
     </div>
     {/* <Asset/> */}
     <FilterMainPage/>
+    <Footer/>
     </>
   )
 }

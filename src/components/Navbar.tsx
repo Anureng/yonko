@@ -48,13 +48,7 @@ const Navbar = () => {
         <div>
           <Web3Button/>
         </div>
-        <div>
-      <button disabled={isLoading} onClick={() => signMessage()}>
-        Sign message
-      </button>
-      {isSuccess && <div>Signature: {data}</div>}
-      {isError && <div>Error signing message</div>}
-    </div>
+    
         </div>
       </div>
     </div>

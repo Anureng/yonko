@@ -23,15 +23,14 @@ const Navbar = () => {
 }
 
 let Links =[
-  {name:"HOME",link:"/"},
-  {name:"ABOUT",link:"/"},
-  {name:"EDUCATION",link:"/"},
-  {name:"PROJECTS",link:"/"},
-  {name:"CONTACT",link:"/"},
+  {name:"TOKEN",link:"/Token"},
+  {name:"CREATE ASSET",link:"/createAsset"},
+  {name:"PROFILE",link:"/Profile"},
+  {name:"ASSET",link:"/Asset"},
 ];
 let [open,setOpen]=useState(false);
   return (
-    <div style={styling}  className='h-screen w-screen'  >
+    <div style={styling}  className='h-screen '  >
       {/* Navbar start  */}
       <div className='shadow-md w-full fixed top-0 left-0 bg-gray-200'>
       <div className='bg-gray-200 md:flex items-center justify-between  py-4 md:px-10 px-7'>
@@ -42,12 +41,11 @@ let [open,setOpen]=useState(false);
         </span>
         Anurag
       </div>
-      
       <div onClick={()=>setOpen(!open)} className='text-3xl absolute right-8 top-6 cursor-pointer md:hidden'>
       <GiHamburgerMenu name={open ? 'close':'menu'}/>
       </div>
 
-      <ul className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-gray-200 md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-18 ':'top-[-490px]'}`}>
+      <ul className={`md:flex md:items-center md:pb-0 pb-12 absolute space-x-3 md:static bg-gray-200 md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-18 ':'top-[-490px]'}`}>
         {
           Links.map((link)=>(
             <li key={link.name} className='md:ml-8 text-lg font-semibold md:my-0 my-7 bg-gray-200'>
@@ -55,6 +53,7 @@ let [open,setOpen]=useState(false);
             </li>
           ))
         }
+        <Web3Button/>
         
       </ul>
       </div>

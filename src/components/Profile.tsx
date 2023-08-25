@@ -1,8 +1,10 @@
 'use client'
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from '@/app/contract/contract'
 import { ethers } from 'ethers'
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
+
 
 const Profile = () => {
   const [contractData , setContractData] = useState()
@@ -39,26 +41,49 @@ const Profile = () => {
    }, [])
 // console.log(data);
 
-
+let metaAddress = address ;
   return (
     <div className='text-white border border-black'>
 
       <div className='flex items-center justify-center text-xl'>
         You created these Assets
       </div>
-      <div className='flex h-96 items-center justify-center space-x-4'>
-      {/* {data.map((el:any)=>(
-        <>
-        <div className='flex flex-col'>
-        <span>{el.name}</span>
-        <span>{el.description}</span>
-        <span>{el.ImageUrl}</span>
-        <span>{el.price}</span>
-        <span>{el.borrowingPrice}</span>
+      <div className='flex flex-wrap items-center justify-center space-x-10 '>
+
+    <div className='flex flex-wrap items-center justify-center space-x-10 '>
+     {
+      contractData?.map((person,i)=>{
+        return (
+          <div>
+
+          {
+            person[4]===address ? (
+              <div key={i } className='border hover:shadow-xl  p-2  hover:rounded-xl'>
+    <span>Name :- {person[0]}</span>
+    <Image className='rounded-xl' src={"https://ipfs.io/ipfs/"+person[7]} alt='loading' width={100} height={100} />
+    {/* <Image src={`https://ipfs.io/ipfs/${person[7]}`} width={100} height={100} alt='Nothing'/> */}
+    <span>Description :- {person[1]}</span> <br />
+    <span>Price :- {parseInt(person[2]._hex)}</span> <br />
+    <span>BorrowingPrice :- {parseInt(person[3]._hex)}</span> <br />
+    <span>Owner :- {person[4].toString()}</span> <br />
+    <span>Borrowed :- {person[8].toString()==="0x0000000000000000000000000000000000000000" ? "No one Borrow this Asset " : (
+      <div>{person[8].toString()}</div>
+      // <div>No one Borrow this Asset </div>
+    )}</span>
+<br />
+
+  </div>
+            ):("")
+          }
+          </div>
+        )
+        
+})
+     }
+    </div>
+  
+
         </div>
-        </>
-      ))} */}
-      </div>
     </div>
   )
 }

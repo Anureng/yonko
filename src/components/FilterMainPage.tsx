@@ -104,37 +104,22 @@ const FilterMainPage = () => {
   }
 
 
+
+
   return (
     <div>
       
     <div className='border border-black  '>
         {/* Navbar with higher or lower price  */}
         <div className='flex items-center space-x-2  justify-around'>
-            <div>
-                <button>Clear All Filter</button>
-            </div>
-            <div className='flex items-center'>
-            <input className='px-1 py-2 outline-none ' onChange={(e)=>setSearchCategory(e.target.value)} type="text" placeholder='Enter Asset Name...' />
-            <Select>
-  <SelectTrigger className="w-[180px] rounded-xl" >
-    <SelectValue placeholder="Select"  />
-  </SelectTrigger>
-  <SelectContent className='rounded-xl'>
-    <SelectItem value="Higher">Higher</SelectItem>
-    <SelectItem value="Lower">Lower</SelectItem>
-    {/* <SelectItem value="Select">Select</SelectItem> */}
-    
-  </SelectContent>
-</Select>
-
-            </div>
+          {/* <input type='text' onChange={(e)=>setS}/> */}
         </div>
         <div className='flex '>
         {/* left filter side  */}
         <div className='space-y-2 '>
            
             {/* Author Category  */}
-            <div className='flex flex-col items-center space-y-3 p-2'>
+            {/* <div className='flex flex-col items-center space-y-3 p-2'>
                 <p className='text-red-600 font-bold text-lg '>Author</p>
                 <button className='bg-gray-200 text-red-500 px-2 py-1 rounded-xl '>Sam</button>
                 <button className='bg-gray-200 text-red-500 px-2 py-1 rounded-xl '>Jony</button>
@@ -142,14 +127,14 @@ const FilterMainPage = () => {
                 <button className='bg-gray-200 text-red-500 px-2 py-1 rounded-xl '>Sang</button>
             </div>
              {/* hardCopy and Soft copy  */}
-             <div className='flex flex-col items-center space-y-3 p-2'>
+             {/* <div className='flex flex-col items-center space-y-3 p-2'>
                 <p className='text-red-600 font-bold text-lg '>Type</p>
                 <button className='bg-gray-200 text-red-500 px-2 py-1 rounded-xl '>Hard Copy</button>
              <button className='bg-gray-200 text-red-500 px-2 py-1 rounded-xl '>Soft Copy</button>
             </div>
-        </div>
+        </div> */} 
         {/* hr line  */}
-        <div className=' border-left border'></div>
+        {/* <div className=' border-left border'></div> */}
 <div className='flex flex-wrap items-center justify-center space-x-10 '>
 {
   loading===true ? (
@@ -188,6 +173,7 @@ const FilterMainPage = () => {
         </div>
         </div>
         </div>
+    </div>
     </div>
   )
 }
